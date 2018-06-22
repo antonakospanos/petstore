@@ -12,7 +12,7 @@ create table pet (
 	species varchar(255)
 );
 
-create table user (
+create table "user" (
 	id bigserial not null
 		constraint user_pkey
 			primary key,
@@ -40,9 +40,8 @@ create table sale(
 
 	user_id bigint
 		constraint fkck1t4noryw58a6jcju0pmj38
-			references user,
+			references "user",
 	pet_id bigint
 		constraint fkk06ypffcsw99ohx5ul5hk5o7t
 			references pet
 );
-
