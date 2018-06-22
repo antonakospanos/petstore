@@ -1,7 +1,7 @@
 <div ng-controller="RegisterCtrl as ctrl" class="col-md-6 col-md-offset-3">
     <h2>Register</h2>
     <form name="form" ng-submit="ctrl.register()" role="form">
-        <div class="form-group" ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }">
+        <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
             <label for="username">Name</label>
             <input type="text" name="name" id="name" class="form-control" ng-model="ctrl.user.name" required />
             <span ng-show="form.name.$dirty && form.name.$error.required" class="help-block">Name is required</span>

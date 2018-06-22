@@ -14,7 +14,7 @@
 
 				<md-input-container>
 					<label>Payment</label>
-					<md-select name="payment" ng-model="sale.payment" required="">
+					<md-select name="payment" ng-model="sale.payment" required>
 						<md-option value="CASH">Cash on delivery</md-option>
 						<md-option value="CREDIT_CARD">Credit card</md-option>
 						<md-option value="PAYPAL">Paypal</md-option>
@@ -23,7 +23,7 @@
 
 				<md-input-container>
 					<label>Delivery</label>
-					<md-select name="delivery" ng-model="sale.delivery" required="">
+					<md-select name="delivery" ng-model="sale.delivery" required>
 						<md-option value="SHIPPING">Shipping to your mail address</md-option>
 						<md-option value="PICKUP">Pick up from the pet store</md-option>
 					</md-select>
@@ -35,17 +35,19 @@
 				</md-input-container>
 
 			</md-content>
+
+			<!-- Buttons Start -->
+			<div class="controls controls-row">
+				<div class="pull-left">
+					<md-button class="md-accent" ng-click="ctrl.cancel()">Close</md-button>
+					<md-button class="md-accent" ng-click="ctrl.reset()">Reset</md-button>
+				</div>
+				<div class="pull-right" layout="row">
+					<md-button class="md-accent md-primary" ng-disabled="!ctrl.isValid()" type="button" ng-click="ctrl.buy()">BUY</md-button>
+				</div>
+			</div>
 		</form>
 
-		<!-- Buttons Start -->
-		<div class="controls controls-row">
-			<div class="pull-left">
-				<md-button class="md-accent" ng-click="ctrl.cancel()">Close</md-button>
-				<md-button class="md-accent" ng-click="ctrl.reset()">Reset</md-button>
-			</div>
-			<div class="pull-right" layout="row">
-				<md-button class="md-accent md-primary" type="button" ng-click="ctrl.buy()">BUY</md-button>
-			</div>
-		</div>
+
 	</div>
 </div>

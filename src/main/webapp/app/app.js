@@ -239,6 +239,11 @@
             $scope.currentState = to.name;
           });
 
+          // Reload state
+          $scope.reloadState = function () {
+            $state.go("pets_review", undefined, {reload: true});
+          }
+
           $scope.scrollTop = function () {
             window.scrollTo(0, 0);
           };
