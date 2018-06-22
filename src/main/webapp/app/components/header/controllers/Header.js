@@ -31,14 +31,12 @@
         }
 
         $scope.loggedIn = function() {
-            setSubscriptionMenus('initial');
             setLoginButton('none')
             setRegisterButton('none')
             setLogoutButton('initial');
         }
 
         $scope.loggedOut = function() {
-            setSubscriptionMenus('none');
             setLoginButton('initial');
             setRegisterButton('initial');
             setLogoutButton('none');
@@ -56,11 +54,6 @@
 
         function setLogoutButton(display) {
             var alert = document.getElementById("logout-button");
-            alert.style.display = display;
-        }
-
-        function setSubscriptionMenus(display) {
-            var alert = document.getElementById("subscription-menus");
             alert.style.display = display;
         }
     }

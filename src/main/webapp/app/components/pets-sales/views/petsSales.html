@@ -3,24 +3,37 @@
 
 		<!-- Header Start -->
 		<div class="controls controls-row">
-			<h3 class="panel-title add-panel-title">Buy Pet</h3>
+			<h3 class="panel-title add-panel-title">Buy {{pet.name}}</h3>
 		</div>
 
 		<!-- Form Start -->
-		<form name="addPetForm" class="panel-body form-group margin-row">
+		<form name="buyPetForm" class="panel-body form-group margin-row">
 			<md-content layout="column" class="md-padding">
+
+				<label>Price: {{pet.price}}€</label>
+
 				<md-input-container>
-					<label>Title</label>
-					<input required="" name="title" ng-model="pet.title">
-					<div ng-messages="addPetForm.title.$error">
-						<div ng-message="required">This is required</div>
-					</div>
+					<label>Payment</label>
+					<md-select name="payment" ng-model="sale.payment" required="">
+						<md-option value="CASH">Cash on delivery</md-option>
+						<md-option value="CREDIT_CARD">Credit card</md-option>
+						<md-option value="PAYPAL">Paypal</md-option>
+					</md-select>
 				</md-input-container>
 
 				<md-input-container>
-					<label>Description</label>
-					<input name="description" ng-model="pet.description">
+					<label>Delivery</label>
+					<md-select name="delivery" ng-model="sale.delivery" required="">
+						<md-option value="SHIPPING">Shipping to your mail address</md-option>
+						<md-option value="PICKUP">Pick up from the pet store</md-option>
+					</md-select>
 				</md-input-container>
+
+				<md-input-container>
+					<label>Remarks</label>
+					<input name="title" ng-model="sale.remarks">
+				</md-input-container>
+
 			</md-content>
 		</form>
 
@@ -31,7 +44,7 @@
 				<md-button class="md-accent" ng-click="ctrl.reset()">Reset</md-button>
 			</div>
 			<div class="pull-right" layout="row">
-				<md-button class="md-accent md-primary" type="button" ng-click="ctrl.add()">ADD</md-button>
+				<md-button class="md-accent md-primary" type="button" ng-click="ctrl.buy()">BUY</md-button>
 			</div>
 		</div>
 	</div>

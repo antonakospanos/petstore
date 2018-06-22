@@ -6,11 +6,15 @@
 
 	function PetsSalesCtrl($rootScope, $scope, $http, $state) {
         var ctrl = this;
-        ctrl.addFlowUrl = $rootScope.backend_protocol + "://" + $rootScope.backend_ip + ":" + $rootScope.backend_port + "/" + $rootScope.backend_context_path + "/sales";
+        ctrl.salesUrl = $rootScope.backend_protocol + "://" + $rootScope.backend_ip + ":" + $rootScope.backend_port + "/" + $rootScope.backend_context_path + "/sales";
+
+        if ($state.params.pet !== undefined) {
+          $scope.pet = $state.params.pet
+        }
 
         ctrl.init = function() {
-            $scope.pet = {};
-            $scope.initialModel = angular.copy($scope.pet);
+            $scope.sale = {};
+            $scope.initialModel = angular.copy($scope.sale);
         }
 
         ctrl.reset = function() {
@@ -18,7 +22,7 @@
             $scope.modalWarning(message, "RESET")
                 .then(function (response) {
                     if (response === true) {
-                        $scope.pet = angular.copy($scope.initialModel);
+                        $scope.sale = angular.copy($scope.initialModel);
                         // location.reload();
                         $scope.scrollTop();
                     }
@@ -53,34 +57,30 @@
             return false;
         }
 
-        ctrl.add = function() {
-            var message = "This will publish '"+$scope.pet.title +"' to the Pet Store. Proceed?";
-            var config = {
-                headers : {
-                    'Content-Type': 'application/json;charset=utf-8;'
+    /**
+     *  Sends a sale request to the backend!
+     */
+    ctrl.buy = function() {
+          $scope.modalAlert("Are you sure you want to buy '" + $scope.pet.name+ "' ?", "BUY")
+          .then(function (response) {
+            if (response === true) {
+
+              $scope.sale.pet = $scope.pet.id;
+              var body = $scope.sale;
+              var config = {
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8;'
                 },
+              }
+              $http.post(ctrl.salesUrl, body, config)
+              .then(function successCallback(response) {
+                $state.go("pets_review");
+                $scope.createToast(response.data.result + "! " + response.data.description)
+              }, function errorCallback(response) {
+                $scope.createToast(response.data.result + "! " + response.data.description)
+              });
             }
-            $scope.modalWarning(message, "ADD")
-                .then(function (response) {
-                    if (response === true) {
-                        $http.post(ctrl.addFlowUrl, $scope.pet, config)
-                            .then(function successCallback(response) {
-                                $scope.refreshPets();
-                                $state.go("pets_review");
-                                // Reload footer's img to switch from alert to check-mark!
-                                $scope.createToast(response.data.result + "! " + response.data.description)
-                                if ($rootScope.pets === 0) {
-                                  location.reload();
-                                } else {
-                                  $scope.scrollTop();
-                                }
-                            }, function errorCallback(response) {
-                                $scope.createToast(response.data.result + "! " + response.data.description)
-                                // var message = response.data.result + "<br/>" + response.data.description;
-                                // $scope.modalError(message, "100");
-                            });
-                    }
-                });
+          });
         }
-    }
+  }
 }());

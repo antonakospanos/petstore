@@ -1314,6 +1314,10 @@ body {
   margin-top: 16px;
 }
 
+.margin-top-30 {
+    margin-top: 30px;
+}
+
 .margin-vertical {
   margin: 5px 0px;
 }
