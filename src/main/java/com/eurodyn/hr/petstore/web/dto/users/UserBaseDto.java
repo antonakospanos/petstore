@@ -8,14 +8,14 @@ import javax.validation.constraints.NotEmpty;
 /**
  * UserBaseDto
  */
-@JsonPropertyOrder({ "username", "password", "name", "email" })
+@JsonPropertyOrder({ "username", "password", "name", "email", "address", "city", "cellphone" })
 public class UserBaseDto {
 
 	@NotEmpty
 	@ApiModelProperty(example = "panto", required = true)
 	private String username;
 
-	// @NotEmpty
+	@NotEmpty
 	@ApiModelProperty(example = "password", required = true)
 	private String password;
 
@@ -23,40 +23,34 @@ public class UserBaseDto {
 	@ApiModelProperty(example = "panos@antonakos.com", required = true)
 	private String email;
 
-	@ApiModelProperty(example = "Panos Antonakos")
+	@NotEmpty
+	@ApiModelProperty(example = "Panos Antonakos", required = true)
 	private String name;
+	
+	@NotEmpty
+	@ApiModelProperty(example = "209 Kifissias Avenue, Maroussi", required = true)
+	private String address;
+	
+	@NotEmpty
+	@ApiModelProperty(example = "Athens", required = true)
+	private String city;
+	
+	@ApiModelProperty(example = "6941234567")
+	private String cellphone;
 
 	public UserBaseDto() {
 	}
 
-	public UserBaseDto(String username, String password, String name, String email) {
+	public UserBaseDto(String username, String password, String name, String email, String address, String city, String cellphone) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.email = email;
+		this.address = address;
+		this.city = city;
+		this.cellphone = cellphone;
 	}
-
-	// Factory methods
-	public UserBaseDto username(String username) {
-		this.username = username;
-		return this;
-	}
-
-	public UserBaseDto password(String password) {
-		this.password = password;
-		return this;
-	}
-
-	public UserBaseDto name(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public UserBaseDto email(String email) {
-		this.email = email;
-		return this;
-	}
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -72,7 +66,31 @@ public class UserBaseDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
+	public String getCellphone() {
+		return cellphone;
+	}
+	
+	public void setCellphone(String cellphone) {
+		this.cellphone = cellphone;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -1,13 +1,17 @@
 package com.eurodyn.hr.petstore.web.security.authentication;
 
+import com.eurodyn.hr.petstore.dao.model.Sale;
 import com.eurodyn.hr.petstore.dao.model.User;
-import com.eurodyn.hr.petstore.service.UserService;
-import com.eurodyn.hr.petstore.web.configuration.SecurityConfiguration;
-import com.eurodyn.hr.petstore.dao.model.User;
+import com.eurodyn.hr.petstore.dao.repository.SaleRepository;
 import com.eurodyn.hr.petstore.service.UserService;
 import com.eurodyn.hr.petstore.web.configuration.SecurityConfiguration;
 import com.eurodyn.hr.petstore.web.security.exception.PetStoreAuthenticationException;
 import com.eurodyn.hr.petstore.web.support.SecurityHelper;
+import com.eurodyn.hr.petstore.web.support.Utils;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,11 +22,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
-
 /**
  * PetStoreAuthenticationProvider.
  */
@@ -31,7 +30,9 @@ public class PetStoreAuthenticationProvider implements AuthenticationProvider, S
 
 	@Autowired
 	private UserService userService;
-
+	
+	@Autowired
+	SaleRepository saleRepository;
 
 	@Value("${application.roles.admin.access-token}")
 	private String adminAccessToken;
@@ -63,14 +64,26 @@ public class PetStoreAuthenticationProvider implements AuthenticationProvider, S
 			// Validate that user's access token is listed in User table
 			UUID accessToken = SecurityHelper.convertAccessToken(token);
 			user = userService.find(accessToken);
-
+			
+			String userResource = StringUtils.substringAfter(authDetails.getContextPath(), "/users/");
+			String saleResource = StringUtils.substringAfter(authDetails.getContextPath(), "/sales/");
+			
 			// Authorization algorithm!
-			if (user != null) {
-				authenticationRequest.setAuthenticated(true);
-				authorities.add(new SimpleGrantedAuthority(SecurityConfiguration.ROLE_USER));
-			} else {
+			if (user == null) {
 				// authenticationRequest.setAuthenticated(false);
 				throw new PetStoreAuthenticationException("Invalid token: " + token);
+			} else if (StringUtils.isNotBlank(userResource) && !accessToken.toString().equals(userResource)) {
+				throw new PetStoreAuthenticationException("User '" + accessToken + "' is not permitted to access other user's information");
+			} else if (StringUtils.isNotBlank(saleResource)) {
+				UUID saleId = Utils.toUUID(saleResource);
+				Sale sale = saleRepository.findByExternalId(saleId);
+				
+				if (sale != null && !accessToken.equals(sale.getBuyer().getExternalId())) {
+					throw new PetStoreAuthenticationException("User '" + accessToken + "' is not permitted to access other user's information");
+				}
+			} else {
+					authenticationRequest.setAuthenticated(true);
+					authorities.add(new SimpleGrantedAuthority(SecurityConfiguration.ROLE_USER));
 			}
 		}
 

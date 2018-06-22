@@ -26,7 +26,7 @@ public class PetService {
 	UserService userService;
 	
 	@Transactional
-	public CreateResponseData create(UUID userExternalId, PetBaseDto petBaseDto) {
+	public CreateResponseData create(PetBaseDto petBaseDto) {
 		PetDto petDto = new PetDto(petBaseDto);
 		Pet pet = petRepository.findByName(petDto.getName());
 		

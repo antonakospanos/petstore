@@ -2,12 +2,9 @@ package com.eurodyn.hr.petstore.web.support;
 
 import com.eurodyn.hr.petstore.web.configuration.SecurityConfiguration;
 import com.eurodyn.hr.petstore.web.security.exception.PetStoreAuthenticationException;
-import com.eurodyn.hr.petstore.web.configuration.SecurityConfiguration;
-import com.eurodyn.hr.petstore.web.security.exception.PetStoreAuthenticationException;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 
 public class SecurityHelper {
 

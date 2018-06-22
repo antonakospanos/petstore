@@ -6,9 +6,8 @@ import com.eurodyn.hr.petstore.web.api.BasePetStoreController;
 import com.eurodyn.hr.petstore.web.dto.pets.PetBaseDto;
 import com.eurodyn.hr.petstore.web.dto.pets.PetDto;
 import com.eurodyn.hr.petstore.web.dto.response.CreateResponse;
-import com.eurodyn.hr.petstore.web.dto.response.ResponseBase;
+import com.eurodyn.hr.petstore.web.dto.response.CreateResponseData;
 import com.eurodyn.hr.petstore.web.enums.Result;
-import com.eurodyn.hr.petstore.web.support.SecurityHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -24,11 +23,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @Api(value = "Pet API", tags = "Pets", position = 1, description = "Pet Management")
@@ -52,35 +52,31 @@ public class PetController extends BasePetStoreController {
     )
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "The pet is created!", response = ResponseBase.class),
+            @ApiResponse(code = 201, message = "The pet is created!", response = CreateResponse.class),
             @ApiResponse(code = 400, message = "The request is invalid!"),
             @ApiResponse(code = 500, message = "server error")})
-    public ResponseEntity<ResponseBase> create(@RequestHeader(value = "Authorization") String authorization, @Valid @RequestBody PetBaseDto petBaseDto) {
-        UUID accessToken = SecurityHelper.getAccessToken(authorization);
-        
-        service.create(accessToken, petBaseDto);
-        
-        ResponseBase responseBase = ResponseBase.Builder().build(Result.SUCCESS);
-        ResponseEntity<ResponseBase> response = ResponseEntity.status(HttpStatus.CREATED).body(responseBase);
-
-        return response;
+    public ResponseEntity<CreateResponse> create(UriComponentsBuilder uriBuilder, @Valid @RequestBody PetBaseDto petBaseDto) {
+        CreateResponseData data = service.create(petBaseDto);
+    
+        UriComponents uriComponents =	uriBuilder.path("/pets/{id}").buildAndExpand(data.getId());
+        CreateResponse responseBase = CreateResponse.Builder().build(Result.SUCCESS).data(data);
+    
+        return ResponseEntity.created(uriComponents.toUri()).body(responseBase);
     }
 
     @ApiOperation(value = "Lists all available pets", response = PetDto.class, responseContainer = "List")
     @RequestMapping(value = "", produces = {"application/json"}, method = RequestMethod.GET)
     public ResponseEntity<Iterable> listAvailablePets() {
         List<PetDto> pets = service.list();
-        ResponseEntity<Iterable> response = ControllerUtils.listResources(pets);
-
-        return response;
+        
+        return ControllerUtils.listResources(pets);
     }
     
     @ApiOperation(value = "Lists the pet's information", response = PetDto.class, responseContainer = "List")
     @RequestMapping(value = "/{id}", produces = {"application/json"}, method = RequestMethod.GET)
-    public ResponseEntity<PetDto> list(@PathVariable UUID petId) {
-        PetDto pet = service.find(petId);
-        ResponseEntity<PetDto> response = ControllerUtils.listResource(pet);
+    public ResponseEntity<PetDto> list(@PathVariable UUID id) {
+        PetDto pet = service.find(id);
         
-        return response;
+        return ControllerUtils.listResource(pet);
     }
 }

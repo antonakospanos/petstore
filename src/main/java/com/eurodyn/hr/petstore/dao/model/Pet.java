@@ -35,8 +35,8 @@ public class Pet implements Serializable {
 	private String description;
 	
 	private Long price;
-
-	@OneToOne
+	
+	@OneToOne(mappedBy = "pet", cascade = CascadeType.ALL , fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "SALE_ID")
 	private Sale sale;
 

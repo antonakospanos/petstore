@@ -80,12 +80,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.regexMatchers(SWAGGER_WHITELIST_REGEX).permitAll()
 
 				// Permit Pets list and User Authentication API
-				.antMatchers(HttpMethod.GET, "/pets").permitAll()
+				.antMatchers(HttpMethod.GET, PETS_API).permitAll()
 				.antMatchers(HttpMethod.POST, "/users").permitAll()
 				.antMatchers(HttpMethod.GET, "/users/id").permitAll()
-
-				// Authorize rest APIs
+				
+				// Authorize admin APIs
+				.antMatchers(HttpMethod.POST, "/pets").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 				.antMatchers(ADMIN_API).hasRole("ADMIN")
+				
+				// Authorize rest APIs
 				.antMatchers(ROLE_USER).hasAnyRole("ADMIN", "USER")
 
 				// Authenticate rest APIs

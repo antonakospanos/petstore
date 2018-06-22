@@ -38,8 +38,10 @@ public class Sale implements Serializable {
 	
 	private String remarks;
 	
+	@Enumerated(EnumType.STRING)
 	private DeliveryMethod delivery;
 	
+	@Enumerated(EnumType.STRING)
 	private PaymentMethod payment;
 	
 	private ZonedDateTime date;

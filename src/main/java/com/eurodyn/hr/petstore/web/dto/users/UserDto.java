@@ -1,18 +1,16 @@
 package com.eurodyn.hr.petstore.web.dto.users;
 
 import com.eurodyn.hr.petstore.dao.model.User;
+import com.eurodyn.hr.petstore.web.dto.Dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
-import com.eurodyn.hr.petstore.dao.model.User;
-import com.eurodyn.hr.petstore.web.dto.Dto;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
+import org.springframework.stereotype.Component;
 
 /**
  * AccountDto
@@ -34,12 +32,15 @@ public class UserDto extends UserBaseDto implements Dto<User> {
 	public UserDto() {
 	}
 
-	public UserDto(UUID id, String username, String password, String name, String email) {
+	public UserDto(UUID id, String username, String password, String name, String email, String address, String city, String cellphone) {
 		this.id = id;
 		setUsername(username);
 		setPassword(password);
 		setName(name);
 		setEmail(email);
+		setAddress(address);
+		setCity(city);
+		setCellphone(cellphone);
 	}
 
 	public UserDto(UUID id, UserBaseDto userBaseDto) {
@@ -48,33 +49,8 @@ public class UserDto extends UserBaseDto implements Dto<User> {
 	}
 
 	public UserDto(UserBaseDto userBaseDto) {
-		super(userBaseDto.getUsername(), userBaseDto.getPassword(), userBaseDto.getName(), userBaseDto.getEmail());
-	}
-
-	// Factory methods
-	public UserDto id(UUID id) {
-		this.id = id;
-		return this;
-	}
-
-	public UserDto username(String username) {
-		setUsername(username);
-		return this;
-	}
-
-	public UserDto password(String password) {
-		setPassword(password);
-		return this;
-	}
-
-	public UserDto name(String name) {
-		setName(name);
-		return this;
-	}
-
-	public UserDto email(String email) {
-		setEmail(email);
-		return this;
+		super(userBaseDto.getUsername(), userBaseDto.getPassword(), userBaseDto.getName(), userBaseDto.getEmail(),
+				userBaseDto.getAddress(), userBaseDto.getCity(), userBaseDto.getCellphone());
 	}
 
 	public UUID getId() {
@@ -107,6 +83,9 @@ public class UserDto extends UserBaseDto implements Dto<User> {
 		setPassword(user.getPassword());
 		setEmail(user.getEmail());
 		setName(user.getName());
+		setAddress(user.getAddress());
+		setCity(user.getCity());
+		setCellphone(user.getCellphone());
 
 		return this;
 	}
@@ -124,6 +103,9 @@ public class UserDto extends UserBaseDto implements Dto<User> {
 		user.setUsername(this.getUsername());
 		user.setName(this.getName());
 		user.setEmail(this.getEmail());
+		user.setAddress(this.getAddress());
+		user.setCity(this.getCity());
+		user.setCellphone(this.getCellphone());
 		// DAO: Add hash password
 
 		return user;

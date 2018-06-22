@@ -6,8 +6,8 @@ import com.eurodyn.hr.petstore.dao.model.User;
 import com.eurodyn.hr.petstore.dao.repository.PetRepository;
 import com.eurodyn.hr.petstore.dao.repository.SaleRepository;
 import com.eurodyn.hr.petstore.dao.repository.UserRepository;
-import com.eurodyn.hr.petstore.web.dto.sales.SaleDto;
 import com.eurodyn.hr.petstore.web.dto.response.CreateResponseData;
+import com.eurodyn.hr.petstore.web.dto.sales.SaleDto;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
@@ -34,6 +34,7 @@ public class SaleService {
 	public CreateResponseData create(UUID userId, SaleDto saleDto) {
 		User user = userRepository.findByExternalId(userId);
 		Pet pet = petRepository.findByExternalId(saleDto.getPet());
+		Sale sale;
 		
 		if (user == null) {
 			throw new IllegalArgumentException("User with ID '" + userId + "' does not exist!");
@@ -43,20 +44,24 @@ public class SaleService {
 			throw new IllegalArgumentException("Pet with name '" + pet.getName() + "' is already bought!");
 		} else {
 			// Add new Sale in DB
-			Sale sale = saleDto.toEntity();
+			sale = saleDto.toEntity();
 			sale.setBuyer(user);
 			sale.setPet(pet);
-			petRepository.save(pet);
+			saleRepository.save(sale);
 			
-			logger.info("New Pet added: " + pet);
+			logger.info("New Sale transaction added: " + sale);
 		}
 		
-		return new CreateResponseData(pet.getExternalId().toString());
+		return new CreateResponseData(sale.getExternalId().toString());
 	}
 	
 	@Transactional
 	public SaleDto list(UUID saleId) {
 		Sale sale = saleRepository.findByExternalId(saleId);
+		
+		if (sale == null) {
+			throw new IllegalArgumentException("Sale transaction with ID '" + saleId + "' does not exist!");
+		}
 		
 		return new SaleDto().fromEntity(sale);
 	}

@@ -6,6 +6,7 @@ import com.eurodyn.hr.petstore.dao.model.Sale;
 import com.eurodyn.hr.petstore.web.dto.Dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -31,7 +32,7 @@ public class SaleDto implements Dto<Sale> {
 	@ApiModelProperty(example = "SHIPPING", required = true)
 	private DeliveryMethod delivery;
 	
-	@ApiModelProperty(example = "Please call me on my cellphone", required = true)
+	@ApiModelProperty(example = "Please call me on my cellphone")
 	private String remarks;
 	
 	public UUID getPet() {
@@ -89,6 +90,7 @@ public class SaleDto implements Dto<Sale> {
 		sale.setDelivery(this.getDelivery());
 		sale.setPayment(this.getPayment());
 		sale.setRemarks(this.getRemarks());
+		sale.setDate(ZonedDateTime.now());
 		// Pet && Buyer are added in the service layer
 		
 		return sale;

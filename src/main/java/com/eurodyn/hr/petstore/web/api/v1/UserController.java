@@ -57,9 +57,8 @@ public class UserController extends BasePetStoreController {
 		
 		UriComponents uriComponents =	uriBuilder.path("/users/{id}").buildAndExpand(data.getId());
 		CreateResponse responseBase = CreateResponse.Builder().build(Result.SUCCESS).data(data);
-		ResponseEntity<CreateResponse> response = ResponseEntity.created(uriComponents.toUri()).body(responseBase);
-
-		return response;
+		
+		return ResponseEntity.created(uriComponents.toUri()).body(responseBase);
 	}
 
 	@RequestMapping(value = "/{id}", produces = {"application/json"}, consumes = {"application/json"},	method = RequestMethod.PATCH)
@@ -81,11 +80,9 @@ public class UserController extends BasePetStoreController {
 		PatchValidator.validatePatchRequest(request, UserDto.fields);
 
 		CreateResponseData data = service.update(id, request.getPatches());
-		
 		CreateResponse responseBase = CreateResponse.Builder().build(Result.SUCCESS).data(data);
-		ResponseEntity<CreateResponse> response = ResponseEntity.ok().body(responseBase);
-
-		return response;
+		
+		return ResponseEntity.ok().body(responseBase);
 	}
 
 	@ApiOperation(value = "Authenticates the user returning his identification", response = IdentityDto.class)
@@ -96,9 +93,10 @@ public class UserController extends BasePetStoreController {
 			@ApiResponse(code = 401, message = "The credentials are invalid"),
 			@ApiResponse(code = 404, message = "No user found!"),
 			@ApiResponse(code = 500, message = "Server Error")})
-	public ResponseEntity<IdentityDto> listAccount(UriComponentsBuilder uriBuilder, @RequestParam String username, @RequestParam String password) throws NotFoundException {
-		UserDto account = service.find(username, password);
+	public ResponseEntity<IdentityDto> listAccount(UriComponentsBuilder uriBuilder, @RequestParam String username,
+			@RequestParam String password) throws NotFoundException {
 		
+		UserDto account = service.find(username, password);
 		ResponseEntity<IdentityDto> response;
 		if (account == null) {
 			response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
