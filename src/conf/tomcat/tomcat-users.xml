@@ -35,6 +35,6 @@
   them. You will also need yearEnd set the passwords yearEnd something appropriate.
 -->
   <role rolename="tomcat"/>
-  <user username="admin" password="admin" roles="tomcat"/>
+  <user username="admin" password="admin" roles="tomcat, manager-gui"/>
 
 </tomcat-users>

@@ -17,6 +17,8 @@
         }
 
         $scope.initFooter = function initFooter() {
+            setConfigCheck('none')
+            setConfigAlert('none')
             setProgressBar('none')
             refreshPets();
         }
@@ -28,13 +30,13 @@
             $http.get(petsUrl)
                 .then(function successCallback(response) {
                     $rootScope.pets = response.data.length;
-                    setConfigCheck('display')
+                    setConfigCheck('initial')
                     setConfigAlert('none')
                     setConfigPrompt($rootScope.pets + " pets available in the Pet Store");
                 }, function errorCallback(response) {
                    $rootScope.pets = response.data.length;
                     setConfigCheck('none')
-                    setConfigAlert('display')
+                    setConfigAlert('initial')
                     if ($rootScope.pets === undefined) {
                         setConfigPrompt("Could not find pets in the Pet Store");
                     } else {

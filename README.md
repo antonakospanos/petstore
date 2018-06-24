@@ -34,14 +34,15 @@ Init or migrate the database schema
 
 ##### Application Execution
 
-petstore is a Spring Boot application thus can be executed as a standalone application, inside a servlet container (Tomcat 9) or running a docker container:
+Petstore is a Spring Boot application thus can be executed as a standalone application, inside a servlet container (Tomcat 9) or running a docker container.
+Default configuration may be overridden using 'spring.config.location' property:
 ```
-java -jar petstore.jar   --spring.config.location=petstore-application.yml
+java -jar petstore.jar --spring.config.location=petstore-application.yml
 ```
 ```
-$CATALINA_HOME/bin/startup.sh   --Dspring.config.location=petstore-application.yml
+$CATALINA_HOME/bin/startup.sh --Dspring.config.location=petstore-application.yml
 ```
 ```
 docker build -t petstore .
-docker run -p 8080:8080 -p 443:443 -p 80:80 -d --name petstore -d petstore   -e SPRING_CONFIG_LOCATION=petstore-application.yml
+docker run -p 8080:8080 -p 443:443 -p 80:80 --name petstore --link rdbms -e SPRING_CONFIG_LOCATION=petstore-application.yml -d petstore
 ```
