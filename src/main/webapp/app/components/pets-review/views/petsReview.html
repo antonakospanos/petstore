@@ -11,6 +11,8 @@
                 {{item.species}}: {{item.breed}}
                 <span flex class="flex"></span>
                 <div class="pull-right btn review-control-button"> Published {{item.publicationDate | date : 'd LLLL yyyy' }}</div>
+                <div class="pull-right btn review-control-button"> {{item.price}} &nbsp;€</div>
+                <div> &nbsp;&nbsp;&nbsp; </div>
             </div>
         </button>
 
@@ -22,7 +24,7 @@
                         {{item.description}}
                     </div>
                     <div flex class="margin-top-30">
-                        <button ng-hide="ctrl.hideButton(item)" type="button" class="pull-right pull-bottom btn btn-danger review-control-button" ng-click="ctrl.buy(item)">Buy {{item.price}}€</button>
+                        <button ng-hide="ctrl.hideButton(item)" type="button" class="pull-right pull-bottom btn btn-danger review-control-button" ng-click="ctrl.buy(item)">Buy</button>
                     </div>
                 </div>
             </div>
