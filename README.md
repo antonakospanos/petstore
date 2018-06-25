@@ -8,6 +8,7 @@ Pet Store is an online marketplace for pets. Users can choose to buy their favor
 * Spring Boot 2
 * PostgreSQL 9.4
 * Maven 3
+* AngularJS
 
 ##### Database
 
@@ -34,11 +35,11 @@ Init or migrate the database schema
 
 ##### Application Execution
 
-Petstore is a Spring Boot application thus can be executed as a standalone application, inside a servlet container (Tomcat 9) or running a docker container.
+Petstore is a Spring Boot application thus can be executed running the 'spring-boot-maven-plugin' or deployed inside a servlet container (Tomcat 9) or a docker container.
 
 Default configuration may be overridden using the 'spring.config.location' property setting the dirpath of the 'petstore-application.yml':
 ```
-java -jar petstore.jar --spring.config.location=/path/to/conf/
+mvn spring-boot:run --Dspring.config.location=/path/to/conf/
 ```
 ```
 $CATALINA_HOME/bin/startup.sh --Dspring.config.location=/path/to/conf/
