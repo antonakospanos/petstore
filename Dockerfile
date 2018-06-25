@@ -8,9 +8,6 @@ COPY src/main/resources/ssl/petstore.keystore $CATALINA_HOME/conf/localhost-rsa.
 COPY src/conf/tomcat/server.xml $CATALINA_HOME/conf/server.xml
 COPY src/conf/tomcat/tomcat-users.xml $CATALINA_HOME/conf/tomcat-users.xml
 
-# Add env variables
-ENV SPRING_CONFIG_LOCATION $CATALINA_HOME/conf/
-
 # Expose Ports
 EXPOSE 8080
 EXPOSE 80

@@ -30,19 +30,20 @@ Init or migrate the database schema
 ##### Application Configuration
 
 * Default : {PROJECT_HOME}/src/main/resources/petstore-application.yml 
-* Runtime : {SPRING_CONFIG_LOCATION}/petstore-application.yml (if not found, the app defaults yearEnd the one in the classpath)
+* Runtime : {SPRING_CONFIG_LOCATION}/petstore-application.yml (if not found, the app defaults to the one in the classpath)
 
 ##### Application Execution
 
 Petstore is a Spring Boot application thus can be executed as a standalone application, inside a servlet container (Tomcat 9) or running a docker container.
-Default configuration may be overridden using 'spring.config.location' property:
+
+Default configuration may be overridden using the 'spring.config.location' property setting the dirpath of the 'petstore-application.yml':
 ```
-java -jar petstore.jar --spring.config.location=petstore-application.yml
+java -jar petstore.jar --spring.config.location=/path/to/conf/
 ```
 ```
-$CATALINA_HOME/bin/startup.sh --Dspring.config.location=petstore-application.yml
+$CATALINA_HOME/bin/startup.sh --Dspring.config.location=/path/to/conf/
 ```
 ```
 docker build -t petstore .
-docker run -p 8080:8080 -p 443:443 -p 80:80 --name petstore --link rdbms -e SPRING_CONFIG_LOCATION=petstore-application.yml -d petstore
+docker run -p 8080:8080 -p 443:443 -p 80:80 --name petstore --link rdbms -d petstore
 ```
