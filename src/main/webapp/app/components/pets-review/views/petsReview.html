@@ -1,8 +1,18 @@
 <div ng-controller="PetsReviewCtrl as ctrl" ng-init="ctrl.init()">
     <div class="config-control-panel config-panel-margin main-width ">
-        &nbsp;&nbsp;Sort by:
-        <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.sortDates()">Date</button>
-        <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.sortPrices()">Price</button>
+        <span>
+            &nbsp;&nbsp;
+            Filter by:
+            <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.filterDogs()">Dogs</button>
+            <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.filterCats()">Cats</button>
+            <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.filterFish()">Fish</button>
+        </span>
+        <span class="pull-right">
+            Sort by:
+            <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.sortDates()">Date</button>
+            <button type="button" class="btn btn-default review-control-button" ng-click="ctrl.sortPrices()">Price</button>
+            &nbsp;&nbsp;
+        </span>
     </div>
 
     <div ng-repeat="item in model.data" class="panel panel-default control-panel config-control-panel config-panel-margin main-width md-whiteframe-6dp review-panel review-item-container">
@@ -10,7 +20,7 @@
             <div flex layout="row" class="ng-binding ng-scope layout-row flex">
                 {{item.species}}: {{item.breed}}
                 <span flex class="flex"></span>
-                <div class="pull-right btn review-control-button"> Published {{item.publicationDate | date : 'd LLLL yyyy' }}</div>
+                <div class="pull-right btn review-control-button"> {{item.publicationDate | date : 'dd MMM yyyy' }}</div>
                 <div class="pull-right btn review-control-button"> {{item.price}} &nbsp;€</div>
                 <div> &nbsp;&nbsp;&nbsp; </div>
             </div>
@@ -24,7 +34,7 @@
                         {{item.description}}
                     </div>
                     <div flex class="margin-top-30">
-                        <button ng-hide="ctrl.hideButton(item)" type="button" class="pull-right pull-bottom btn btn-danger review-control-button" ng-click="ctrl.buy(item)">Buy</button>
+                        <button ng-hide="ctrl.hideButton(item)" type="button" class="pull-right pull-bottom btn btn-danger review-control-button" ng-click="ctrl.buy(item)">&nbsp;Buy&nbsp;</button>
                     </div>
                 </div>
             </div>

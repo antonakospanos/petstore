@@ -14,6 +14,18 @@
       ctrl.listPets();
     }
 
+    ctrl.filterDogs = function () {
+      // TODO: Filter dogs
+    }
+
+    ctrl.filterCats = function () {
+      // TODO: Filter cats
+    }
+
+    ctrl.filterFish = function () {
+      // TODO: Filter fish
+    }
+
     ctrl.sortPrices = function () {
       // TODO: Sort pets by ASC or DESC price
     }
