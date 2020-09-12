@@ -4,7 +4,7 @@ Pet Store is an online marketplace for pets. Users can choose to buy their favor
 
 ##### Technology Stack
 
-* Java 10
+* Java 11
 * Spring Boot 2
 * PostgreSQL 9.4
 * Maven 3
@@ -47,4 +47,11 @@ $CATALINA_HOME/bin/startup.sh --Dspring.config.location=/path/to/conf/
 ```
 docker build -t petstore .
 docker run -p 8080:8080 -p 443:443 -p 80:80 --name petstore --link rdbms -d petstore
+```
+##### Application Deployment
+
+Use heroku to deploy the `develop` branch to `https://antonakos-petstore.herokuapp.com` as follows:
+```
+git remote add heroku https://git.heroku.com/antonakos-petstore.git
+git push heroku develop:master
 ```

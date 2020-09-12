@@ -10,13 +10,17 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 /**
  * AccountDto
  */
 @JsonPropertyOrder({ "id", "username", "password", "name", "email" })
-@Component
+@Getter
+@Setter
 public class UserDto extends UserBaseDto implements Dto<User> {
 
 	public static List<String> fields = Arrays.asList(UserBaseDto.class.getDeclaredFields())
@@ -51,14 +55,6 @@ public class UserDto extends UserBaseDto implements Dto<User> {
 	public UserDto(UserBaseDto userBaseDto) {
 		super(userBaseDto.getUsername(), userBaseDto.getPassword(), userBaseDto.getName(), userBaseDto.getEmail(),
 				userBaseDto.getAddress(), userBaseDto.getCity(), userBaseDto.getCellphone());
-	}
-
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
 	}
 
 	@JsonIgnore

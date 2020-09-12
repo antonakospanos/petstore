@@ -7,9 +7,7 @@
 
   function PetsSalesCtrl($rootScope, $scope, $http, $state) {
     var ctrl = this;
-    ctrl.salesUrl = $rootScope.backend_protocol + "://" + $rootScope.backend_ip
-        + ":" + $rootScope.backend_port + "/" + $rootScope.backend_context_path
-        + "/sales";
+    ctrl.salesUrl = $rootScope.backend_api + "/sales";
 
     if ($state.params.pet !== undefined) {
       $scope.pet = $state.params.pet

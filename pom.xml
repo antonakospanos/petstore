@@ -7,15 +7,16 @@
 	<groupId>com.eurodyn.hr</groupId>
 	<artifactId>petstore</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>10</maven.compiler.source>
-		<maven.compiler.target>10</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 
-		<spring.boot.version>2.0.1.RELEASE</spring.boot.version> <!-- 1.5.8.RELEASE  2.0.0.M6 -->
+		<spring.boot.version>2.1.16.RELEASE</spring.boot.version>
 		<swagger.version>2.8.0</swagger.version>
+		<querydsl.version>4.2.1</querydsl.version>
 		<mqtt.client.version>1.0.2</mqtt.client.version>
 
 		<db.root.url>jdbc:postgresql://${db.host}:${db.port}/postgres</db.root.url>
@@ -240,7 +241,7 @@
 					<orderFile>ascending</orderFile>
 				</configuration>
 				<executions>
-					<!-- need yearEnd connect with root user yearEnd create database and module user -->
+					<!-- need to connect with root user to create database and module user -->
 					<execution>
 						<id>init-db</id>
 						<phase>validate</phase>
@@ -253,24 +254,6 @@
 								DROP USER IF EXISTS ${db.module.userId};
 								CREATE USER ${db.module.userId} LOGIN PASSWORD '${db.module.password}' NOCREATEDB NOCREATEROLE NOREPLICATION VALID UNTIL 'infinity';
 								CREATE DATABASE ${db.module.database.name} WITH ENCODING='UTF8' ${db.create_db_extra} OWNER=${db.module.userId} CONNECTION LIMIT=-1;
-							</sqlCommand>
-							<skip>${init.database.skip}</skip>
-						</configuration>
-						<inherited>false</inherited>
-					</execution>
-					<!-- need yearEnd connect with module user in order yearEnd create schema in module database -->
-					<execution>
-						<id>init-db-schema</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<url>${db.module.url}</url>
-							<username>${db.module.userId}</username>
-							<password>${db.module.password}</password>
-							<sqlCommand>
-								CREATE SCHEMA petstore AUTHORIZATION ${db.module.userId};
 							</sqlCommand>
 							<skip>${init.database.skip}</skip>
 						</configuration>
@@ -293,7 +276,7 @@
 					<table>DB_MIGRATION_HISTORY</table>
 					<outOfOrder>true</outOfOrder>
 					<schemas>
-						<schema>petstore</schema>
+						<schema>public</schema>
 					</schemas>
 				</configuration>
 				<dependencies>
@@ -335,11 +318,16 @@
 			<artifactId>spring-mock</artifactId>
 			<version>2.0.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
 
 		<!-- DB -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId> <!-- Includes: org.hibernate.hibernate-core: 5.2.12.Final -->
+			<artifactId>spring-boot-starter-data-jpa</artifactId> <!-- Includes: org.hibernate.hibernate-core: 5.3.17.Final -->
 			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
@@ -352,6 +340,22 @@
 			<!--<artifactId>spring-data-rest-hal-browser</artifactId> &lt;!&ndash; HATEOAS REST API: http://server:8080/petstore/browser/index.html &ndash;&gt;-->
 		<!--</dependency>-->
 		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1206-jdbc42</version>
@@ -361,12 +365,17 @@
 			<artifactId>h2</artifactId> <!-- H2 in memory Database -->
 			<version>1.4.196</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>5.2.4</version>
+		</dependency>
 
 		<!-- Cache -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>5.2.16.Final</version> <!-- Compatible with org.hibernate.hibernate-core included by spring-boot-starter-data-jpa  -->
+			<version>5.3.17.Final</version> <!-- Compatible with org.hibernate.hibernate-core included by spring-boot-starter-data-jpa  -->
 		</dependency>
 
 		<!-- Swagger Dependencies -->
@@ -391,6 +400,13 @@
 			<groupId>org.jolokia</groupId>
 			<artifactId>jolokia-core</artifactId>
 			<version>1.3.7</version>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.2</version>
 		</dependency>
 
 		<!-- Commons -->

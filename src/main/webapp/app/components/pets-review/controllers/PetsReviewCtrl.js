@@ -7,7 +7,7 @@
 
   function PetsReviewCtrl($rootScope, $scope, $http, $state) {
     var ctrl = this;
-    var petsUrl = $rootScope.backend_protocol + "://"  + $rootScope.backend_ip + ":" + $rootScope.backend_port + "/"  + $rootScope.backend_context_path + "/pets";
+    var petsUrl = $rootScope.backend_api + "/pets";
 
     // Initialization
     ctrl.init = function () {

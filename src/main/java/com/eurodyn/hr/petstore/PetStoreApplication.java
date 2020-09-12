@@ -9,9 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAutoConfiguration//(exclude={DataSourceAutoConfiguration.class})
 @EnableScheduling
-@ComponentScan(basePackages = {"com.eurodyn.hr.petstore"})
 public class PetStoreApplication extends SpringBootServletInitializer {
 
 	private static final String CONFIG_NAME = "petstore-application";

@@ -1,8 +1,8 @@
 server:
-  # Configuration of Spring Boot embedded Tomcat server (java -jar petstore.war)
+  # Configuration of Spring Boot embedded Tomcat server (java -jar petstore.jar)
   servlet:
-    contextPath: '/petstore'
-  port: 8443
+    contextPath: ''
+  port: "${PORT:8443}"
   http:
     port: 8080
 endpoints:
@@ -20,12 +20,12 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
-#    hibernate:
-#      ddl-auto: create-drop # create | update | validate | create-drop
+    hibernate:
+      ddl-auto: update # create | update | validate | create-drop
     properties:
       net.sf.ehcache.configurationResourceName: petstore-ehcache.xml
       hibernate:
-        default_schema: petstore
+        default_schema: public
         show_sql: false
         generate_statistics: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -36,15 +36,18 @@ spring:
           use_second_level_cache: true
           region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
   datasource:
-    url: 'jdbc:postgresql://rdbms:5432/petstore?currentSchema=petstore'
-    username: petstore
-    password: petstore
+    url: "${DB_URL:jdbc:postgresql://rdbms:5432/petstore}"
+    username: "${DB_USERNAME:petstore}"
+    password: "${DB_PASSWORD:petstore}"
     driver-class-name: org.postgresql.Driver
-flyway:
-  enabled: true
-  table: DB_MIGRATION_HISTORY
-  sqlMigrationSuffix: .sql
-  schemas: petstore
+  flyway:
+    # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#data-migration-properties
+    enabled: true
+    sqlMigrationSuffix: .sql
+    validate-on-migrate: false
+    table: DB_MIGRATION_HISTORY
+    baselineOnMigrate: true
+    schemas: public
 application:
   roles:
     admin:

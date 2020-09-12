@@ -7,11 +7,11 @@
     </appender>
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/applogs/petstore/petstore.log</file>
+        <file>${LOG_PATH:-log/}petstore.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/applogs/petstore/petstore-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>${LOG_PATH:-log/}petstore-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <!-- keep 20 days worth of history -->
             <maxHistory>2</maxHistory>
         </rollingPolicy>
@@ -23,7 +23,8 @@
 
     <!-- enable these for debugging -->
     <!--<logger name="org.springframework" level="debug"/>-->
-    <logger name="org.hibernate.SQL" level="debug"/>
+    <!--<logger name="org.hibernate.SQL" level="debug"/>-->
+    <logger name="org.flywaydb" level="debug"/>
 
     <logger name="com.eurodyn.hr.petstore" level="debug" additivity="false">
         <appender-ref ref="console"/>

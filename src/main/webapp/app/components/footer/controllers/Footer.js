@@ -24,7 +24,7 @@
         }
 
         function refreshPets() {
-            var petsUrl = $rootScope.backend_protocol + "://" + $rootScope.backend_ip + ":" + $rootScope.backend_port + "/" + $rootScope.backend_context_path + "/pets";
+            var petsUrl = $rootScope.backend_api + "/pets";
 
             // Lookup for /pets
             $http.get(petsUrl)
